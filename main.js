@@ -137,10 +137,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     chamber.querySelector(".bullet").classList.remove("unknown");
                     chamber.querySelector(".bullet").classList.remove("loaded");
                 });
-
+                
                 // Bang!
                 resetSound(bangSound);
                 bangSound.play();
+
+                createBloodSplatters();
 
                 heartbeatPulses.forEach((pulse) => {
                     pulse.classList.remove("active");
@@ -235,4 +237,148 @@ function getWeightedSpinResult(initialChamber) {
     }
 
     return 5; // Fallback to last chamber (should never reach here)
+}
+
+function createBloodSplatters() {
+    let container = document.getElementById('blood-splatter-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'blood-splatter-container';
+        document.body.appendChild(container);
+    }
+
+    const numSplatters = Math.floor(Math.random() * 5) + 6;
+    let largeSplatCount = 0;
+    let splat1Count = 0;
+    let largeSplat1Exists = false;
+
+    // Sectors for better distribution
+    const sectors = [
+        { x: [0, 50], y: [0, 50], used: 0 },      // Top Left
+        { x: [50, 100], y: [0, 50], used: 0 },    // Top Right
+        { x: [0, 50], y: [50, 100], used: 0 },    // Bottom Left
+        { x: [50, 100], y: [50, 100], used: 0 }   // Bottom Right
+    ];
+
+    // Helper function to get random position within a sector
+    function getPositionInSector(sector, size) {
+        const sizePercentage = (size / window.innerWidth) * 100;
+        const padding = sizePercentage / 2;
+        
+        // Adjust ranges to account for splatter size
+        const xMin = Math.max(sector.x[0] + padding, sector.x[0]);
+        const xMax = Math.min(sector.x[1] - padding, sector.x[1]);
+        const yMin = Math.max(sector.y[0] + padding, sector.y[0]);
+        const yMax = Math.min(sector.y[1] - padding, sector.y[1]);
+        
+        return {
+            x: xMin + (Math.random() * (xMax - xMin)),
+            y: yMin + (Math.random() * (yMax - yMin))
+        };
+    }
+
+    // Helper function to select a sector
+    function selectSector(size) {
+        const isLarge = size > 200;
+        
+        if (isLarge) {
+            // For large splatters, prefer less used sectors
+            const availableSectors = sectors
+                .filter(s => s.used < 3)  // Increased from 2 to 3 since we have fewer sectors
+                .sort((a, b) => a.used - b.used);
+            
+            if (availableSectors.length > 0) {
+                const sector = availableSectors[0];
+                sector.used++;
+                return sector;
+            }
+        }
+        
+        // For smaller splatters or if no preferred sectors available
+        // Weighted random selection favoring less used sectors
+        const totalWeight = sectors.reduce((sum, sector) => sum + (4 - sector.used), 0); // Changed from 3 to 4
+        let random = Math.random() * totalWeight;
+        
+        for (const sector of sectors) {
+            const weight = 4 - sector.used;  // Changed from 3 to 4
+            if (random <= weight) {
+                sector.used++;
+                return sector;
+            }
+            random -= weight;
+        }
+        
+        return sectors[Math.floor(Math.random() * sectors.length)];
+    }
+
+    for (let i = 0; i < numSplatters; i++) {
+        const splatter = document.createElement('img');
+        
+        // Size logic
+        let size;
+        const sizeRoll = Math.random();
+        
+        if (largeSplatCount < 3 && sizeRoll > 0.6) {
+            size = 200 + Math.random() * 150;
+            largeSplatCount++;
+        } else {
+            size = largeSplatCount >= 2 ? 
+                   (30 + Math.random() * 100) : 
+                   (50 + Math.random() * 130);
+        }
+
+        // Splatter type selection with constraints
+        let splatterNum;
+        if (size > 200) {
+            if (splat1Count === 0 && Math.random() > 0.5) {
+                splatterNum = 1;
+                splat1Count++;
+                largeSplat1Exists = true;
+            } else {
+                splatterNum = Math.random() < 0.5 ? 2 : 3;
+            }
+        } else {
+            if (splat1Count < 2 && !largeSplat1Exists && Math.random() > 0.7) {
+                splatterNum = 1;
+                splat1Count++;
+            } else if (splat1Count < 1 && !largeSplat1Exists && Math.random() > 0.5) {
+                splatterNum = 1;
+                splat1Count++;
+            } else {
+                splatterNum = Math.random() < 0.5 ? 2 : 3;
+            }
+        }
+
+        splatter.src = `img/splatt${splatterNum}.svg`;
+        
+        // Position using sector system
+        const sector = selectSector(size);
+        const position = getPositionInSector(sector, size);
+        
+        splatter.style.position = 'fixed';
+        splatter.style.left = `${position.x}%`;
+        splatter.style.top = `${position.y}%`;
+        
+        splatter.style.width = `${size}px`;
+        splatter.style.height = `${size}px`;
+        
+        let rotation;
+        if (splatterNum === 1) {
+            rotation = (Math.random() * 40) - 20;
+        } else {
+            rotation = Math.random() * 360;
+        }
+        
+        splatter.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+        
+        const baseOpacity = 0.3 + Math.random() * 0.4;
+        splatter.style.opacity = size > 200 ? 
+                                Math.min(baseOpacity * 1.2, 0.85) : 
+                                baseOpacity;
+        
+        splatter.style.pointerEvents = 'none';
+        splatter.style.filter = 'brightness(0.8)';
+        
+        container.appendChild(splatter);
+    }
 }

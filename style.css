@@ -336,6 +336,21 @@ body::before {
     visibility: visible;
 }
 
+#blood-splatter-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;  /* Below the reset button but above other elements */
+}
+
+#blood-splatter-container img {
+    position: fixed;
+    z-index: 999;
+}
+
 /* Heartbeat Effect */
 .heartbeat-container {
     pointer-events: none;
@@ -612,4 +627,55 @@ body::before {
         height: 65px;
     }
 }
+
+@media screen and (max-width: 400px) {
+    #game-container {
+        transform: scale(0.8);
+        transform-origin: center center;
+        width: 125%; /* Compensate for scale */
+        margin: 0 auto;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%) scale(0.8);
+    }
+    
+    #cylinder { 
+        transform: scale(0.8);
+        transform-origin: center center;
+        margin: 35px auto;
+    }
+    
+    /* Adjust buttons position to account for scaling */
+    .game-button {
+        bottom: 0%;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    #game-container {
+        transform: translateX(-50%) scale(0.6); /* Smaller scale for tiny screens */
+        width: 166%; /* Further compensate for the smaller scale (1/0.6 = ~1.66) */
+    }
+    
+    #cylinder { 
+        transform: scale(0.6);
+    }
+    
+    /* Further adjust message and buttons for very small screens */
+    #message {
+        font-size: 28px;
+    }
+    
+    .game-button {
+        bottom: 0%;
+        padding: 12px 30px;
+        font-size: 20px;
+    }
+    
+    /* Adjust counter position */
+    #counter {
+        font-size: 22px;
+    }
+}
+
 
