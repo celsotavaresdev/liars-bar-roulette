@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const spinSound = document.getElementById("spin-sound");
     const bangSound = document.getElementById("bang-sound");
     const cylinder = document.getElementById("cylinder");
+    const cylinderWrapper = cylinder.parentElement; 
     const message = document.getElementById("message");
     const spinButton = document.getElementById("spin-button");
     const fireButton = document.getElementById("fire-button");
@@ -78,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isSpinning || isSpun) return;
 
         isSpinning = true;
-        cylinder.classList.add("spinning");
+        cylinderWrapper.classList.add("spinning");
         spinButton.style.visibility = "hidden";
         message.textContent = "Spinning...";
 
@@ -93,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         setTimeout(() => {
-            cylinder.classList.remove("spinning");
+            cylinderWrapper.classList.remove("spinning");
             isSpinning = false;
             isSpun = true;
 
@@ -119,7 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
         isSpinning = true;
 
         totalRotation += 60;
-        cylinder.style.transform = `rotate(${totalRotation}deg)`;
+       
+        cylinderWrapper.style.transform = `scale(var(--cylinder-scale)) rotate(${totalRotation}deg)`;
+
         attempts++;
         counter.textContent = `${attempts}/6`;
 
@@ -149,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 message.textContent = "BANG!";
-                cylinder.classList.add("game-over");
+                cylinderWrapper.classList.add("game-over");
                 fireButton.style.visibility = "hidden";
                 redOverlay.classList.add("show");
             } else {

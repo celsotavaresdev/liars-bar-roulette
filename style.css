@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --cylinder-scale: 1;
+}
+
 body {
     background-color: #1a1814;
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -69,10 +73,14 @@ body::before {
 }
 
 /* Cylinder Styles */
-#cylinder {
-    transform: rotate(0deg);
+.cylinder-wrapper {
+    position: relative;
+    transform-origin: center center;
+    transform: scale(var(--cylinder-scale)) rotate(0deg);
     transition: transform 0.5s cubic-bezier(0.3, 0, 0.2, 1);
-    margin: 35px auto;
+}
+
+#cylinder {
     position: relative;
     width: 400px;
     height: 400px;
@@ -499,34 +507,34 @@ body::before {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(1440deg); }
+    from { transform: scale(var(--cylinder-scale)) rotate(0deg); }
+    to { transform: scale(var(--cylinder-scale)) rotate(1440deg); }
 }
 
 @keyframes rotate-chamber {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(60deg); }
+    from { transform: scale(var(--cylinder-scale)) rotate(0deg); }
+    to { transform: scale(var(--cylinder-scale)) rotate(60deg); }
 }
 
 @keyframes bang {
     0% {
-        transform: scale(1) rotate(0deg);
+        transform: scale(var(--cylinder-scale)) rotate(0deg);
         filter: brightness(1);
     }
     25% {
-        transform: scale(1.3) rotate(-5deg);
+        transform: scale(var(--cylinder-scale)) rotate(-5deg);
         filter: brightness(2);
     }
     50% {
-        transform: scale(1.2) rotate(5deg);
+        transform: scale(var(--cylinder-scale)) rotate(5deg);
         filter: brightness(1.5);
     }
     75% {
-        transform: scale(1.1) rotate(-2deg);
+        transform: scale(var(--cylinder-scale)) rotate(-2deg);
         filter: brightness(1.2);
     }
     100% {
-        transform: scale(1) rotate(0deg);
+        transform: scale(var(--cylinder-scale)) rotate(0deg);
         filter: brightness(1);
     }
 }
@@ -607,6 +615,9 @@ body::before {
 }
 
 @media screen and (max-width: 450px) {
+    :root {
+        --cylinder-scale: 0.875;
+    }
     #cylinder { width: 350px; height: 350px; }
     .chamber { width: 64px; height: 64px;  }
 
@@ -628,53 +639,51 @@ body::before {
     }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 399px) {
+    :root {
+        --cylinder-scale: 0.8;
+    }
+
     #game-container {
-        transform: scale(0.8);
-        transform-origin: center center;
-        width: 125%; /* Compensate for scale */
+        width: 125%;
         margin: 0 auto;
         position: relative;
         left: 50%;
-        transform: translateX(-50%) scale(0.8);
+        transform: translateX(-50%);
     }
     
     #cylinder { 
-        transform: scale(0.8);
-        transform-origin: center center;
-        margin: 35px auto;
+        margin: 0px auto;
     }
     
-    /* Adjust buttons position to account for scaling */
     .game-button {
         bottom: 0%;
     }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 299px) {
+    :root {
+        --cylinder-scale: 0.6;
+    }
+
     #game-container {
-        transform: translateX(-50%) scale(0.6); /* Smaller scale for tiny screens */
-        width: 166%; /* Further compensate for the smaller scale (1/0.6 = ~1.66) */
+        width: 166%;
+        transform: translateX(-50%);
     }
     
-    #cylinder { 
-        transform: scale(0.6);
-    }
-    
-    /* Further adjust message and buttons for very small screens */
     #message {
         font-size: 28px;
     }
     
     .game-button {
-        bottom: 0%;
+        bottom: 10%;
         padding: 12px 30px;
         font-size: 20px;
     }
     
-    /* Adjust counter position */
     #counter {
-        font-size: 22px;
+        font-size: 18px;
+        top: 56.5%;
     }
 }
 
