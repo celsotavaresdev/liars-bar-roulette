@@ -23,10 +23,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Ensure main elements stack vertically */
+    flex-direction: column;
 }
 
-/* Beer stain effect */
 body::before {
     content: '';
     position: fixed;
@@ -40,7 +39,6 @@ body::before {
     z-index: 1;
 }
 
-/* Game Container */
 #game-container {
     position: relative;
     display: flex;
@@ -50,7 +48,7 @@ body::before {
     padding: 20px;
     max-width: 800px;
     width: 100%;
-    display: none; 
+    display: none;
 }
 
 #message {
@@ -73,7 +71,6 @@ body::before {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Cylinder Styles */
 .cylinder-wrapper {
     position: relative;
     transform-origin: center center;
@@ -87,7 +84,6 @@ body::before {
     height: 400px;
 }
 
-/* New - Separate background element */
 #cylinder::before {
     content: '';
     position: absolute;
@@ -98,10 +94,9 @@ body::before {
     background: url('img/cylinder.svg') center center no-repeat;
     background-size: 100% 100%;
     filter: brightness(0) saturate(100%) invert(80%) sepia(32%) saturate(1000%) hue-rotate(360deg) brightness(103%) contrast(103%);
-    z-index: -1;  /* Place behind chambers */
+    z-index: -1;
 }
 
-/* Center Pin - place above background but below chambers */
 #cylinder::after {
     content: '';
     position: absolute;
@@ -112,13 +107,12 @@ body::before {
     height: 60px;
     background: #1a1814;;
     border-radius: 50%;
-    box-shadow: 
+    box-shadow:
         inset 0 0 5px rgba(0, 0, 0, 0.5),
         0 0 5px rgba(0, 0, 0, 0.3);
     z-index: 0;
 }
 
-/* Chamber Styles */
 .chamber {
     position: relative;
     overflow: hidden;
@@ -138,7 +132,7 @@ body::before {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 32px;
-    color: #d4b483; /* Reverted to main text color */
+    color: #d4b483;
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -168,7 +162,6 @@ body::before {
     background-color: rgba(139, 0, 0, 0.3);
 }
 
-/* Chamber Positions */
 .chamber.one { top: 46px; left: 79px; }
 .chamber.two { top: 75px; left: 79px; }
 .chamber.three { top: 54px; left: 165px; }
@@ -176,15 +169,13 @@ body::before {
 .chamber.five { top: -165px; left: 250px; }
 .chamber.six { top: 67px; left: 165px; }
 
-/* Bullet Styles */
 .bullet {
-    /* Default bullet color (original, before spin) */
-    background: #d4b483; 
+    background: #d4b483;
     opacity: 0;
     width: 70px;
     height: 70px;
     border-radius: 100%;
-    transition: opacity 0.3s ease, background-color 0.3s ease; /* Add transition for color */
+    transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .bullet.loaded {
@@ -192,30 +183,26 @@ body::before {
     transform: scale(0.8);
 }
 
-/* When unknown (after spin), change bullet color to dark gray */
 .bullet.unknown {
     opacity: 0.5;
-    background: #212121; /* Dark gray for unknown bullet */
+    background: #212121;
 }
 
 .bullet .ring {
-    /* Default ring color (darker original, before spin) */
-    background-color: #b39363; 
+    background-color: #b39363;
     position: absolute;
     left: 15px;
     top: 15px;
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    transition: background-color 0.3s ease; /* Add transition for color */
+    transition: background-color 0.3s ease;
 }
 
-/* When unknown (after spin), change ring color to even darker gray */
 .bullet.unknown .ring {
-    background-color: #1a1a1a; /* Even darker gray for unknown bullet ring */
+    background-color: #1a1a1a;
 }
 
-/* Button Styles */
 .game-button {
     padding: 15px 40px;
     font-size: 24px;
@@ -243,19 +230,18 @@ body::before {
     box-shadow: none;
 }
 
-/* Specific button positioning/visibility */
 #spin-button, #fire-button {
     position: absolute;
     top: 100%;
     transform: translateX(-50%);
-    opacity: 0; /* Start hidden */
-    pointer-events: none; /* Disable clicks when hidden */
-    transition: opacity 0.3s ease-out; /* Fade transition */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
 }
 
 #spin-button.show-button, #fire-button.show-button {
-    opacity: 1; /* Show with fade-in */
-    pointer-events: auto; /* Enable clicks when shown */
+    opacity: 1;
+    pointer-events: auto;
 }
 
 #spin-button {
@@ -267,11 +253,10 @@ body::before {
     animation: danger-pulse 2s infinite;
 }
 
-/* Game Over Styles */
 .game-over-text {
     font-size: 64px;
     color: #e7e3db;
-    text-align: center; /* Centralize text */
+    text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     opacity: 0;
     transform: scale(0.5);
@@ -307,10 +292,9 @@ body::before {
     box-shadow: none;
 }
 
-/* Overlay Styles */
 #red-overlay {
     position: fixed;
-    top: 0; 
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -321,9 +305,9 @@ body::before {
     align-items: center;
     flex-direction: column;
     gap: 2rem;
-    opacity: 0; 
-    visibility: hidden; 
-    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 #red-overlay::before {
@@ -334,17 +318,17 @@ body::before {
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom,
-            rgba(139, 0, 0, 0.8) 0%,
-            rgba(139, 0, 0, 0.6) 40%,
-            rgba(139, 0, 0, 0.4) 60%,
-            rgba(139, 0, 0, 0.2) 80%,
-            rgba(139, 0, 0, 0) 100%);
+                rgba(139, 0, 0, 0.8) 0%,
+                rgba(139, 0, 0, 0.6) 40%,
+                rgba(139, 0, 0, 0.4) 60%,
+                rgba(139, 0, 0, 0.2) 80%,
+                rgba(139, 0, 0, 0) 100%);
     transform: translateY(-100%);
 }
 
 #red-overlay.show {
-    opacity: 1; 
-    visibility: visible; 
+    opacity: 1;
+    visibility: visible;
     pointer-events: all;
 }
 
@@ -377,8 +361,8 @@ body::before {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 999;  /* Below the reset button but above other elements */
-    display: none; /* Initially hidden */
+    z-index: 999;
+    display: none;
 }
 
 #blood-splatter-container img {
@@ -386,7 +370,6 @@ body::before {
     z-index: 999;
 }
 
-/* Heartbeat Effect */
 .heartbeat-container {
     pointer-events: none;
     position: fixed;
@@ -405,7 +388,7 @@ body::before {
 .heartbeat-pulse.left {
     left: 0;
     transform-origin: left center;
-    background: 
+    background:
         radial-gradient(circle at left, rgba(139, 0, 0, 0.08) 0%, rgba(139, 0, 0, 0.06) 20%, rgba(139, 0, 0, 0.04) 40%, rgba(139, 0, 0, 0.02) 60%, rgba(139, 0, 0, 0) 100%),
         linear-gradient(to right, rgba(139, 0, 0, 0.08) 0%, rgba(139, 0, 0, 0.06) 40%, rgba(139, 0, 0, 0.03) 70%, rgba(139, 0, 0, 0) 100%),
         radial-gradient(circle farthest-side at left, rgba(139, 0, 0, 0.04) 0%, transparent 100%);
@@ -416,7 +399,7 @@ body::before {
 .heartbeat-pulse.right {
     right: 0;
     transform-origin: right center;
-    background: 
+    background:
         radial-gradient(circle at right, rgba(139, 0, 0, 0.08) 0%, rgba(139, 0, 0, 0.06) 20%, rgba(139, 0, 0, 0.04) 40%, rgba(139, 0, 0, 0.02) 60%, rgba(139, 0, 0, 0) 100%),
         linear-gradient(to left, rgba(139, 0, 0, 0.08) 0%, rgba(139, 0, 0, 0.06) 40%, rgba(139, 0, 0, 0.03) 70%, rgba(139, 0, 0, 0) 100%),
         radial-gradient(circle farthest-side at right, rgba(139, 0, 0, 0.04) 0%, transparent 100%);
@@ -424,12 +407,11 @@ body::before {
     -webkit-mask-image: linear-gradient(to left, black 0%, black 60%, transparent 100%);
 }
 
-/* Style for start button in player setup */
 #player-setup-container #start-button {
-    position: static; /* Override absolute positioning */
-    visibility: visible; /* Make it visible */
-    margin-top: 50px; /* Keep original margin */
-    bottom: auto; /* Remove bottom positioning */
+    position: static;
+    visibility: visible;
+    margin-top: 50px;
+    bottom: auto;
 }
 
 #start-button:disabled {
@@ -437,7 +419,6 @@ body::before {
     cursor: not-allowed;
 }
 
-/* Player setup container */
 #player-setup-container {
     display: flex;
     flex-direction: column;
@@ -528,9 +509,8 @@ body::before {
     color: #ff6666;
 }
 
-/* Player Score Container */
 #player-score-container {
-    display: none; /* Hidden initially */
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 20px;
@@ -539,7 +519,7 @@ body::before {
     width: 100%;
     color: #d4b483;
     font-family: "Rye", cursive;
-    margin-top: -10px; /* Ajustado para subir a lista de jogadores */
+    margin-top: -10px;
 }
 
 #player-score-list {
@@ -569,20 +549,14 @@ body::before {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Style for eliminated players */
 #player-score-list li.eliminated {
     opacity: 0.5;
     text-decoration: line-through;
     cursor: not-allowed;
-    background-color: #1a1814; /* Darker background for eliminated */
-    border-color: #8b0000; /* Red border for eliminated */
-    color: #ff0000; /* Set text color to red for eliminated players */
+    background-color: #1a1814;
+    border-color: #8b0000;
+    color: #ff0000;
 }
-/* Removed specific color for span.status inside eliminated li to allow parent color to apply */
-/* #player-score-list li.eliminated span.status {
-    color: #d4b483;
-} */
-
 
 #player-score-list li span.status {
     font-size: 18px;
@@ -595,12 +569,11 @@ body::before {
     margin-top: 20px;
 }
 
-/* Updated style for game-action-button to match game-button */
 #red-overlay .action-buttons .game-action-button {
-    padding: 15px 40px; /* Match game-button padding */
-    font-size: 24px; /* Match game-button font-size */
+    padding: 15px 40px;
+    font-size: 24px;
     font-family: "Rye", cursive;
-    background: linear-gradient(45deg, #2c1810, #3c2820); /* Match game-button background */
+    background: linear-gradient(45deg, #2c1810, #3c2820);
     color: #d4b483;
     border: 2px solid #d4b483;
     border-radius: 4px;
@@ -608,7 +581,7 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 3px;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(212, 180, 131, 0.3); /* Match game-button shadow */
+    box-shadow: 0 0 15px rgba(212, 180, 131, 0.3);
     overflow: hidden;
     opacity: 0;
     transform: translateY(20px);
@@ -623,12 +596,11 @@ body::before {
 }
 
 #red-overlay .action-buttons .game-action-button:hover {
-    background: linear-gradient(45deg, #3c2820, #4a3830); /* Slightly different hover for distinction */
+    background: linear-gradient(45deg, #3c2820, #4a3830);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Animation Keyframes */
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
@@ -714,7 +686,6 @@ body::before {
     }
 }
 
-/* Animation Classes */
 .spinning {
     animation: spin 1.68s cubic-bezier(0.3, 0, 0.2, 1) forwards;
 }
@@ -727,7 +698,6 @@ body::before {
     animation: bang 0.3s ease-out;
 }
 
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
     #game-container {
         margin-top: 40px;
@@ -784,11 +754,11 @@ body::before {
         width: 125%;
         margin: 0 auto;
     }
-    
-    #cylinder { 
+
+    #cylinder {
         margin: 0px auto;
     }
-    
+
 }
 
 @media screen and (max-width: 299px) {
@@ -799,35 +769,34 @@ body::before {
     #game-container {
         width: 166%;
     }
-    
+
 }
 
-/* Card Styles */
 #card-reveal-container {
     position: relative;
     top: auto;
     left: auto;
     transform: none;
-    display: none; /* Hidden initially */
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-top: 10px; /* Ajustado para subir mais */
-    margin-bottom: 10px; /* Ajustado para subir mais */
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #card-reveal-container h3 {
     font-size: 28px;
     color: #d4b483;
     text-align: center;
-    margin-bottom: 0; /* Remove default margin */
+    margin-bottom: 0;
 }
 
 .card-stack-container {
     position: relative;
-    width: 90px; /* Smaller size */
-    height: 135px; /* Smaller size */
-    perspective: 1000px; /* For 3D flip effect */
+    width: 90px;
+    height: 135px;
+    perspective: 1000px;
 }
 
 .card {
@@ -859,20 +828,20 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 36px; /* Adjusted font size for smaller card */
+    font-size: 36px;
     font-weight: bold;
     color: #1a1814;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .card-front {
-    background-color: #8b0000; /* Red back of card */
+    background-color: #8b0000;
     background-image: linear-gradient(45deg, #a00000, #600000);
     border: 3px solid #d4b483;
 }
 
 .card-back {
-    background-color: #e7e3db; /* White front of card */
+    background-color: #e7e3db;
     transform: rotateY(180deg);
     border: 3px solid #1a1814;
 }
@@ -882,26 +851,24 @@ body::before {
 }
 
 .card-stack-bottom {
-    top: 5px; /* Slightly offset for stack effect */
+    top: 5px;
     left: 0;
-    z-index: -1; /* Behind the top card */
-    filter: brightness(0.8); /* Slightly darker to show depth */
+    z-index: -1;
+    filter: brightness(0.8);
 }
 
-/* Disable clicks on player list items when card is active */
 #player-score-list li.disabled-click {
     pointer-events: none;
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-/* Main Game Content Wrapper */
 #main-game-content-wrapper {
-    display: none; /* Hidden initially, controlled by JS */
+    display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align to start to place card at top */
-    gap: 10px; /* Reduzido o espaço entre a carta e a lista de jogadores */
-    height: 100%; /* Ensure it takes full height to allow flex distribution */
-    padding-top: 10px; /* Reduzido para subir mais */
+    justify-content: flex-start;
+    gap: 10px;
+    height: 100%;
+    padding-top: 10px;
 }
