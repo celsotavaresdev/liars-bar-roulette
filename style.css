@@ -22,8 +22,8 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column; /* Ensure main elements stack vertically */
 }
 
 /* Beer stain effect */
@@ -50,6 +50,7 @@ body::before {
     padding: 20px;
     max-width: 800px;
     width: 100%;
+    display: none; 
 }
 
 #message {
@@ -137,7 +138,7 @@ body::before {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 32px;
-    color: #1a1814;;
+    color: #d4b483; /* Reverted to main text color */
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -177,12 +178,13 @@ body::before {
 
 /* Bullet Styles */
 .bullet {
-    background: #d4b483;
+    /* Default bullet color (original, before spin) */
+    background: #d4b483; 
     opacity: 0;
     width: 70px;
     height: 70px;
     border-radius: 100%;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, background-color 0.3s ease; /* Add transition for color */
 }
 
 .bullet.loaded {
@@ -190,18 +192,27 @@ body::before {
     transform: scale(0.8);
 }
 
+/* When unknown (after spin), change bullet color to dark gray */
 .bullet.unknown {
-    opacity: 1;
+    opacity: 0.5;
+    background: #212121; /* Dark gray for unknown bullet */
 }
 
 .bullet .ring {
-    background-color: #b39363;
+    /* Default ring color (darker original, before spin) */
+    background-color: #b39363; 
     position: absolute;
     left: 15px;
     top: 15px;
     width: 40px;
     height: 40px;
     border-radius: 100%;
+    transition: background-color 0.3s ease; /* Add transition for color */
+}
+
+/* When unknown (after spin), change ring color to even darker gray */
+.bullet.unknown .ring {
+    background-color: #1a1a1a; /* Even darker gray for unknown bullet ring */
 }
 
 /* Button Styles */
@@ -217,10 +228,6 @@ body::before {
     text-transform: uppercase;
     letter-spacing: 3px;
     transition: all 0.3s ease;
-    visibility: hidden;
-    position: absolute;
-    bottom: -10%;
-    z-index: 5;
     box-shadow: 0 0 15px rgba(212, 180, 131, 0.3);
     overflow: hidden;
 }
@@ -236,6 +243,21 @@ body::before {
     box-shadow: none;
 }
 
+/* Specific button positioning/visibility */
+#spin-button, #fire-button {
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%);
+    opacity: 0; /* Start hidden */
+    pointer-events: none; /* Disable clicks when hidden */
+    transition: opacity 0.3s ease-out; /* Fade transition */
+}
+
+#spin-button.show-button, #fire-button.show-button {
+    opacity: 1; /* Show with fade-in */
+    pointer-events: auto; /* Enable clicks when shown */
+}
+
 #spin-button {
     animation: pulse 2s infinite;
 }
@@ -249,6 +271,7 @@ body::before {
 .game-over-text {
     font-size: 64px;
     color: #e7e3db;
+    text-align: center; /* Centralize text */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     opacity: 0;
     transform: scale(0.5);
@@ -287,7 +310,7 @@ body::before {
 /* Overlay Styles */
 #red-overlay {
     position: fixed;
-    top: -100%;
+    top: 0; 
     left: 0;
     width: 100%;
     height: 100%;
@@ -298,6 +321,9 @@ body::before {
     align-items: center;
     flex-direction: column;
     gap: 2rem;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
 }
 
 #red-overlay::before {
@@ -317,9 +343,9 @@ body::before {
 }
 
 #red-overlay.show {
-    top: 0;
+    opacity: 1; 
+    visibility: visible; 
     pointer-events: all;
-    transition: top 0.3s ease-in;
 }
 
 #red-overlay.show::before {
@@ -352,6 +378,7 @@ body::before {
     height: 100%;
     pointer-events: none;
     z-index: 999;  /* Below the reset button but above other elements */
+    display: none; /* Initially hidden */
 }
 
 #blood-splatter-container img {
@@ -368,16 +395,6 @@ body::before {
     width: 100%;
     height: 100%;
     z-index: 999;
-}
-
-.heartbeat-pulse {
-    position: fixed;
-    top: 0;
-    width: 180px;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
 }
 
 .heartbeat-pulse.active {
@@ -407,70 +424,209 @@ body::before {
     -webkit-mask-image: linear-gradient(to left, black 0%, black 60%, transparent 100%);
 }
 
-/* Goose Button Styles */
-.goose-button {
-    padding: 8px 20px;
-    font-size: 18px;
+/* Style for start button in player setup */
+#player-setup-container #start-button {
+    position: static; /* Override absolute positioning */
+    visibility: visible; /* Make it visible */
+    margin-top: 50px; /* Keep original margin */
+    bottom: auto; /* Remove bottom positioning */
+}
+
+#start-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Player setup container */
+#player-setup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    color: #d4b483;
     font-family: "Rye", cursive;
-    background: #ffc107;
-    color: #000;
-    border: 2px solid #000;
+}
+
+#player-input-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+#player-name-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #2c1810;
+    border: 1px solid #d4b483;
+    border-radius: 4px;
+    color: #d4b483;
+}
+
+#add-player-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background: linear-gradient(45deg, #2c1810, #3c2820);
+    color: #d4b483;
+    border: 2px solid #d4b483;
     border-radius: 4px;
     cursor: pointer;
-    letter-spacing: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    opacity: 0;
-    transform: translateY(20px);
-    visibility: hidden;
-    margin-top: 15px;
-    min-width: 200px;
 }
 
-.goose-button .goose-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-}
-
-.goose-button .goose-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.goose-button .arrow-icon {
-    margin-left: auto;
-    width: 16px;
-    height: 16px;
-    border-right: 2px solid #000;
-    border-top: 2px solid #000;
-    transform: rotate(45deg);
-}
-
-.goose-button:hover {
+#add-player-button:hover {
+    background-color: #3c2820;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background: #ffcd38;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.goose-button:active {
+#add-player-button:active {
     transform: translateY(0);
     box-shadow: none;
 }
 
-/* Show the button when reset button is visible */
-#red-overlay.show .goose-button {
+#add-player-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#player-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+#player-list li {
+    background-color: #2c1810;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: 1px solid #d4b483;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#player-list li .remove-player {
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+#player-list li .remove-player:hover {
+    color: #ff6666;
+}
+
+/* Player Score Container */
+#player-score-container {
+    display: none; /* Hidden initially */
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    color: #d4b483;
+    font-family: "Rye", cursive;
+    margin-top: -10px; /* Ajustado para subir a lista de jogadores */
+}
+
+#player-score-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+#player-score-list li {
+    background-color: #2c1810;
+    margin-bottom: 5px;
+    padding: 15px;
+    border: 2px solid #d4b483;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#player-score-list li:hover:not(.eliminated) {
+    background-color: #3c2820;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Style for eliminated players */
+#player-score-list li.eliminated {
+    opacity: 0.5;
+    text-decoration: line-through;
+    cursor: not-allowed;
+    background-color: #1a1814; /* Darker background for eliminated */
+    border-color: #8b0000; /* Red border for eliminated */
+    color: #ff0000; /* Set text color to red for eliminated players */
+}
+/* Removed specific color for span.status inside eliminated li to allow parent color to apply */
+/* #player-score-list li.eliminated span.status {
+    color: #d4b483;
+} */
+
+
+#player-score-list li span.status {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#red-overlay .action-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Updated style for game-action-button to match game-button */
+#red-overlay .action-buttons .game-action-button {
+    padding: 15px 40px; /* Match game-button padding */
+    font-size: 24px; /* Match game-button font-size */
+    font-family: "Rye", cursive;
+    background: linear-gradient(45deg, #2c1810, #3c2820); /* Match game-button background */
+    color: #d4b483;
+    border: 2px solid #d4b483;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(212, 180, 131, 0.3); /* Match game-button shadow */
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+}
+
+#red-overlay.show .action-buttons .game-action-button {
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
     transition: all 0.3s ease 0.5s;
 }
 
-
-
+#red-overlay .action-buttons .game-action-button:hover {
+    background: linear-gradient(45deg, #3c2820, #4a3830); /* Slightly different hover for distinction */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
 /* Animation Keyframes */
 @keyframes pulse {
@@ -533,10 +689,6 @@ body::before {
         transform: scale(var(--cylinder-scale)) rotate(-2deg);
         filter: brightness(1.2);
     }
-    100% {
-        transform: scale(var(--cylinder-scale)) rotate(0deg);
-        filter: brightness(1);
-    }
 }
 
 @keyframes heartbeat {
@@ -585,22 +737,6 @@ body::before {
         transform: scale(1);
         justify-content: flex-start;
     }
-
-    .goose-button {
-        font-size: 16px;
-        padding: 6px 16px;
-        min-width: 180px;
-    }
-    
-    .goose-button .goose-icon {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .goose-button .arrow-icon {
-        width: 14px;
-        height: 14px;
-    }
 }
 
 
@@ -647,18 +783,12 @@ body::before {
     #game-container {
         width: 125%;
         margin: 0 auto;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
     }
     
     #cylinder { 
         margin: 0px auto;
     }
     
-    .game-button {
-        bottom: 0%;
-    }
 }
 
 @media screen and (max-width: 299px) {
@@ -668,23 +798,110 @@ body::before {
 
     #game-container {
         width: 166%;
-        transform: translateX(-50%);
     }
     
-    #message {
-        font-size: 28px;
-    }
-    
-    .game-button {
-        bottom: 10%;
-        padding: 12px 30px;
-        font-size: 20px;
-    }
-    
-    #counter {
-        font-size: 18px;
-        top: 56.5%;
-    }
 }
 
+/* Card Styles */
+#card-reveal-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    display: none; /* Hidden initially */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px; /* Ajustado para subir mais */
+    margin-bottom: 10px; /* Ajustado para subir mais */
+}
 
+#card-reveal-container h3 {
+    font-size: 28px;
+    color: #d4b483;
+    text-align: center;
+    margin-bottom: 0; /* Remove default margin */
+}
+
+.card-stack-container {
+    position: relative;
+    width: 90px; /* Smaller size */
+    height: 135px; /* Smaller size */
+    perspective: 1000px; /* For 3D flip effect */
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px; /* Adjusted font size for smaller card */
+    font-weight: bold;
+    color: #1a1814;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.card-front {
+    background-color: #8b0000; /* Red back of card */
+    background-image: linear-gradient(45deg, #a00000, #600000);
+    border: 3px solid #d4b483;
+}
+
+.card-back {
+    background-color: #e7e3db; /* White front of card */
+    transform: rotateY(180deg);
+    border: 3px solid #1a1814;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-stack-bottom {
+    top: 5px; /* Slightly offset for stack effect */
+    left: 0;
+    z-index: -1; /* Behind the top card */
+    filter: brightness(0.8); /* Slightly darker to show depth */
+}
+
+/* Disable clicks on player list items when card is active */
+#player-score-list li.disabled-click {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Main Game Content Wrapper */
+#main-game-content-wrapper {
+    display: none; /* Hidden initially, controlled by JS */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align to start to place card at top */
+    gap: 10px; /* Reduzido o espaço entre a carta e a lista de jogadores */
+    height: 100%; /* Ensure it takes full height to allow flex distribution */
+    padding-top: 10px; /* Reduzido para subir mais */
+}
