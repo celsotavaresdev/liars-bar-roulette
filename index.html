@@ -20,11 +20,11 @@
 
   <!-- Open Graph / Facebook / Discord -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://liar.tiny.pm/" />
+  <meta property="og:url" content="https://www.celsotavares.dev/liars-bar-roulette/" />
   <meta property="og:title" content="Liar's Bar Roulette" />
   <meta property="og:description"
     content="Roulette spinner for doing an in-person game of Liar's Deck... without the risk" />
-  <meta property="og:image" content="https://liar.tiny.pm/img/og-image.png" />
+  <meta property="og:image" content="https://www.celsotavares.dev/liars-bar-roulette/img/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -59,22 +59,66 @@
   <audio id="bang-sound" preload="auto" playsinline>
     <source src="sounds/shot.mp3" type="audio/mpeg" />
   </audio>
+  <audio id="card-flip-sound" preload="auto" playsinline>
+    <source src="sounds/card-flip.mp3" type="audio/mpeg" />
+  </audio>
 
   <div id="red-overlay">
-    <div class="game-over-text">DEAD</div>
-    <button class="reset-button" onclick="window.location.reload()">RESET</button>
-    <a href="https://tiny.pm/" class="goose-button" target="_blank" rel="noopener noreferrer">
-      <span class="goose-icon">
-        <img src="img/logo.png" alt="Goose Logo">
-      </span>
-      More Info
-      <span class="arrow-icon"></span>
-    </a>
+    <div class="game-over-text"></div> <!-- Empty initially, content set by JS -->
+    <div class="action-buttons">
+        <button id="continue-game-button" class="game-action-button">CONTINUE</button>
+        <button id="new-game-button" class="game-action-button">NEW GAME</button>
+        <button id="back-to-players-button" class="game-action-button">BACK</button>
+    </div>
   </div>
   <div class="heartbeat-container">
     <div class="heartbeat-pulse left"></div>
     <div class="heartbeat-pulse right"></div>
   </div>
+
+  <!-- Player Setup Container -->
+  <div id="player-setup-container">
+    <h2>Add Players (2-4)</h2>
+    <div id="player-input-group">
+      <input type="text" id="player-name-input" placeholder="Enter player name" maxlength="15">
+      <button id="add-player-button">Add</button>
+    </div>
+    <ul id="player-list">
+      <!-- Player names will be added here -->
+    </ul>
+    <button id="start-button" class="game-button" disabled>START</button>
+  </div>
+
+  <!-- New Wrapper for Card and Player List -->
+  <div id="main-game-content-wrapper">
+    <!-- Card Reveal Container -->
+    <div id="card-reveal-container">
+      <h3>Card of the table</h3>
+      <div class="card-stack-container">
+          <div id="top-card" class="card">
+              <div class="card-inner">
+                  <div class="card-front"></div>
+                  <div class="card-back"></div>
+              </div>
+          </div>
+          <div id="bottom-card" class="card card-stack-bottom">
+              <div class="card-inner">
+                  <div class="card-front"></div>
+                  <div class="card-back"></div>
+              </div>
+          </div>
+      </div>
+      <p id="card-message" style="font-size: 24px; color: #d4b483; text-align: center;"></p>
+    </div>
+
+    <!-- Player Score Container (List of Players in Game) -->
+    <div id="player-score-container">
+      <ul id="player-score-list">
+        <!-- Players and their status/score will be displayed here -->
+      </ul>
+    </div>
+  </div>
+
   <div id="game-container">
     <div id="message">Load a bullet...</div>
     <div class="cylinder-wrapper">
@@ -109,7 +153,7 @@
           <div class="bullet">
             <div class="ring"></div>
           </div>
-        </div>
+          </div>
       </div>
     </div>
     <div id="counter"></div>
