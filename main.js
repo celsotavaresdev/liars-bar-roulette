@@ -72,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardRevealContainer = document.getElementById("card-reveal-container");
     const topCardElement = document.getElementById("top-card");
     const cardBackElement = topCardElement.querySelector(".card-back");
-    const cardMessage = document.getElementById("card-message");
     let isCardRevealing = false; // Flag to prevent multiple clicks during flip
     let revealedCard = null; // Stores the revealed card for the current game session
 
@@ -127,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
         players.forEach(player => {
             const listItem = document.createElement("li");
             listItem.textContent = player.name;
+            listItem.classList.add("disabled");
             const removeButton = document.createElement("button");
             removeButton.textContent = "X";
             removeButton.classList.add("remove-player");
@@ -215,7 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
         
         topCardElement.classList.remove("flipped"); // Ensure card is face down
         cardBackElement.textContent = ""; // Clear previous card value
-        cardMessage.textContent = ""; // Clear card message text
 
         if (revealedCard) {
             // If a card is already revealed for this game, show it immediately
@@ -465,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         redOverlay.querySelector(".game-over-text").textContent = "ALL ELIMINATED!";
                     }
                 } else { 
-                    redOverlay.querySelector(".game-over-text").innerHTML = `${currentPlayer.name}<br>is dead`; 
+                    redOverlay.querySelector(".game-over-text").innerHTML = 'DEAD'; 
                     continueGameButton.style.display = 'none'; 
                     newGameButton.style.display = 'none';
                     backToPlayersButton.style.display = 'block'; 
@@ -589,7 +588,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // Reset card visual state
             topCardElement.classList.remove("flipped");
             cardBackElement.textContent = "";
-            cardMessage.textContent = ""; // Ensure card message is clear
 
             // Update player setup UI
             updatePlayerListDisplay();
