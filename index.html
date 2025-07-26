@@ -76,22 +76,30 @@
     <div class="heartbeat-pulse right"></div>
   </div>
 
+  <div id="title-container">
+    <h1>Liar's Bar - Roulette</h2>
+  </div>
+
   <!-- Player Setup Container -->
   <div id="player-setup-container">
-    <h2>Add Players (2-4)</h2>
-    <div id="player-input-group">
-      <input type="text" id="player-name-input" placeholder="Enter player name" maxlength="15">
-      <button id="add-player-button">Add</button>
+    <div id="add-player-container">
+      <h2>Add Players (2-4)</h2>
+      <div id="player-input-group">
+        <input type="text" id="player-name-input" placeholder="Enter player name" maxlength="15">
+        <button id="add-player-button">+</button>
+      </div>
     </div>
+    
     <ul id="player-list">
       <!-- Player names will be added here -->
     </ul>
-    <button id="start-button" class="game-button" disabled>START</button>
+    <div class="button-container">
+      <button id="start-button" class="game-button" disabled>START</button>
+    </div>
   </div>
 
   <!-- New Wrapper for Card and Player List -->
   <div id="main-game-content-wrapper">
-    <!-- Card Reveal Container -->
     <div id="card-reveal-container">
       <h3>Card of the table</h3>
       <div class="card-stack-container">
@@ -108,7 +116,6 @@
               </div>
           </div>
       </div>
-      <p id="card-message" style="font-size: 24px; color: #d4b483; text-align: center;"></p>
     </div>
 
     <!-- Player Score Container (List of Players in Game) -->
@@ -120,47 +127,50 @@
   </div>
 
   <div id="game-container">
-    <div id="message">Load a bullet...</div>
-    <div class="cylinder-wrapper">
-      <div id="cylinder">
-        <div class="ring center"></div>
-        <div class="chamber six">
-          <div class="bullet">
-            <div class="ring"></div>
+    <div id="spinner-container">
+      <div id="message">Load a bullet...</div>
+      <div class="cylinder-wrapper">
+        <div id="cylinder">
+          <div class="ring center"></div>
+          <div class="chamber six">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
           </div>
+          <div class="chamber one">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
+          </div>
+          <div class="chamber two">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
+          </div>
+          <div class="chamber three">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
+          </div>
+          <div class="chamber five">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
+          </div>
+          <div class="chamber four">
+            <div class="bullet">
+              <div class="ring"></div>
+            </div>
+            </div>
         </div>
-        <div class="chamber one">
-          <div class="bullet">
-            <div class="ring"></div>
-          </div>
-        </div>
-        <div class="chamber two">
-          <div class="bullet">
-            <div class="ring"></div>
-          </div>
-        </div>
-        <div class="chamber three">
-          <div class="bullet">
-            <div class="ring"></div>
-          </div>
-        </div>
-        <div class="chamber five">
-          <div class="bullet">
-            <div class="ring"></div>
-          </div>
-        </div>
-        <div class="chamber four">
-          <div class="bullet">
-            <div class="ring"></div>
-          </div>
-          </div>
       </div>
     </div>
     <div id="counter"></div>
-    <button id="spin-button" class="game-button">SPIN</button>
-    <button id="fire-button" class="game-button">FIRE</button>
+    <div class="button-container">
+      <button id="spin-button" class="game-button">SPIN</button>
+      <button id="fire-button" class="game-button">FIRE</button>
+    </div>
   </div>
-  <!-- end of game-container -->
   <script src="main.js?v2.3"></script>
 </body>
 
